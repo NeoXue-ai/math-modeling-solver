@@ -6,7 +6,7 @@ Use this file to decide what each stage must consume, produce, and review. Keep 
 
 | Stage | Entry artifacts | Required work | Exit artifacts | Stop? |
 | --- | --- | --- | --- | --- |
-| `problem_parse` | Passing `problem_source_gate`, problem statement, attachments | Extract tasks, objectives, constraints, deliverables, data files, units, and implicit assumptions. | `memory/problem_analysis.md` | No |
+| `problem_parse` | Problem statement, attachments | Extract tasks, objectives, constraints, deliverables, data files, units, and implicit assumptions. | `memory/problem_analysis.md` | No |
 | `model_route_review` | Problem analysis, data audit preview | Propose 2-3 routes with baseline model, improved model, validation plan, evidence, and risks. | `memory/modeling_route.md`, `state/review_request.md` | Yes |
 | `assumption_review` | Approved route | Draft assumptions with justification, affected variables, and expected effect on results. | `memory/assumptions.md`, `state/review_request.md` | Yes |
 | `data_audit` | Raw data, attachments | Inspect schema, missingness, outliers, units, encoding, sampling period, and leakage risks. | `data/data_audit.md` | No |
@@ -29,8 +29,6 @@ Use this file to decide what each stage must consume, produce, and review. Keep 
 
 ## Artifact Discipline
 
-- `memory/problem_source.json` is the source of truth for whether the problem statement is official, pasted, or mock. If it is `unknown`, stop before `problem_parse`.
-- Do not invent contest year, problem code, title, data files, or subproblem text. Extract them only from source evidence.
 - Conversation memory is not a source of truth. Durable files under `CUMCM_Workspace/` are.
 - Every figure in the paper must exist under the workspace and be listed by an approved registry result or an audited paper section note.
 - Every reported number should be reproducible from `src/`, data files, and a verification report.
