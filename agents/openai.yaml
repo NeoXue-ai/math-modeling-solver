@@ -1,0 +1,4 @@
+interface:
+  display_name: "数学建模 Solver"
+  short_description: "CUMCM 严谨建模流水线、代码验证、敏感性分析与论文草稿"
+  default_prompt: "Use $math-modeling-solver to solve this CUMCM problem with checkpoints, verified solver code, sensitivity analysis, and a paper draft."

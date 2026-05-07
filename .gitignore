@@ -1,0 +1,22 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local modeling workspaces and generated outputs
+CUMCM_Workspace/
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+
+# Local editor and environment files
+.env
+.venv/
+venv/
+.idea/
+.vscode/
