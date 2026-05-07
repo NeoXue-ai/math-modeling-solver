@@ -47,6 +47,18 @@ SEED_TEXT_FILES = {
 
 RESULT_REGISTRY = {"schema_version": 1, "results": []}
 
+PROBLEM_SOURCE = {
+    "schema_version": 1,
+    "source_type": "unknown",
+    "ready_for_modeling": False,
+    "contest_claim": "",
+    "problem_code": "",
+    "official_claim": False,
+    "statement_path": "",
+    "source_files": [],
+    "notes": "Problem source has not been recorded. Do not infer or fabricate the problem statement.",
+}
+
 
 def utc_timestamp():
     return datetime.now(timezone.utc).isoformat()
@@ -92,6 +104,7 @@ def setup_workspace(project):
         (workspace / relative_dir).mkdir(parents=True, exist_ok=True)
 
     write_json_if_absent(workspace / "state" / "pipeline.json", initial_pipeline_state())
+    write_json_if_absent(workspace / "memory" / "problem_source.json", PROBLEM_SOURCE)
     write_json_if_absent(workspace / "memory" / "result_registry.json", RESULT_REGISTRY)
 
     for relative_file, content in SEED_TEXT_FILES.items():
