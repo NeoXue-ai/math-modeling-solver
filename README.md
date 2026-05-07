@@ -82,6 +82,46 @@ model_route_review: not_started
 
 ## 工作流
 
+一图看懂整体流程：
+
+```mermaid
+flowchart TD
+    A[题目文件与附件] --> B[初始化 CUMCM_Workspace]
+    B --> C[problem_parse<br/>题目解析]
+
+    C --> D{model_route_review<br/>人工确认建模路线}
+    D -->|通过| E{assumption_review<br/>人工确认模型假设}
+    D -->|修改| C
+
+    E -->|通过| F[data_audit<br/>数据审计]
+    E -->|修改| D
+
+    F --> G[data_preprocess<br/>数据清洗与特征处理]
+    G --> H[model_build<br/>模型建立与代码求解]
+    H --> I{model_verify<br/>自动验证门禁}
+    I -->|失败| H
+    I -->|通过| J[sensitivity_analysis<br/>敏感性分析]
+
+    J --> K{result_review<br/>人工确认结果入文}
+    K -->|修改| H
+    K -->|通过| L[paper_draft<br/>论文草稿]
+
+    L --> M{paper_quality_audit<br/>自动论文门禁}
+    M -->|失败| L
+    M -->|通过| N[final_compile<br/>PDF 或 Markdown 输出]
+    N --> O[complete<br/>交付论文、代码、报告]
+
+    classDef auto fill:#eef6ff,stroke:#2563eb,color:#0f172a;
+    classDef checkpoint fill:#fff7ed,stroke:#ea580c,color:#0f172a;
+    classDef gate fill:#fef2f2,stroke:#dc2626,color:#0f172a;
+    classDef output fill:#f0fdf4,stroke:#16a34a,color:#0f172a;
+
+    class B,C,F,G,H,J,L,N auto;
+    class D,E,K checkpoint;
+    class I,M gate;
+    class O output;
+```
+
 完整阶段如下：
 
 ```text
