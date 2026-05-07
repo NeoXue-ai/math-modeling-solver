@@ -8,7 +8,7 @@
   <a href="https://github.com/NeoXue-ai/math-modeling-solver">
     <img alt="Platform" src="https://img.shields.io/badge/platform-Codex%20%7C%20Claude%20Code-1f6feb">
   </a>
-  <img alt="Tests" src="https://img.shields.io/badge/tests-39%20passing-2da44e">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-41%20passing-2da44e">
   <img alt="Python" src="https://img.shields.io/badge/python-3.9%2B-3776ab">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-0969da">
 </p>
