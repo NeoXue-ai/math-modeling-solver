@@ -24,14 +24,10 @@ class SetupWorkspaceTests(unittest.TestCase):
             self.assertTrue((workspace / "state" / "pipeline.json").exists())
             self.assertTrue((workspace / "state" / "review_request.md").exists())
             self.assertTrue((workspace / "state" / "user_decisions.md").exists())
-            self.assertTrue((workspace / "memory" / "problem_source.json").exists())
             self.assertTrue((workspace / "memory" / "result_registry.json").exists())
             state = json.loads((workspace / "state" / "pipeline.json").read_text(encoding="utf-8"))
             self.assertEqual(state["current_stage"], "problem_parse")
             self.assertEqual(state["stages"]["problem_parse"]["status"], "not_started")
-            source = json.loads((workspace / "memory" / "problem_source.json").read_text(encoding="utf-8"))
-            self.assertEqual(source["source_type"], "unknown")
-            self.assertFalse(source["ready_for_modeling"])
 
 
 if __name__ == "__main__":
