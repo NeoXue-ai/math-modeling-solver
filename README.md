@@ -23,7 +23,7 @@ python3 -m unittest discover -s tests -v
 python3 /path/to/skill-creator/scripts/quick_validate.py /path/to/math-modeling-solver
 ```
 
-当前测试覆盖 37 个用例，覆盖 workspace 初始化、pipeline 状态转换、verification report 解析、质量门禁和论文编译 fallback。
+当前测试覆盖 39 个用例，覆盖 workspace 初始化、pipeline 状态转换、verification report 解析、质量门禁、论文编译 fallback 和双平台安装。
 
 ## 适用场景
 
@@ -42,18 +42,56 @@ python3 /path/to/skill-creator/scripts/quick_validate.py /path/to/math-modeling-
 
 ## 安装
 
-把本仓库放到 Codex skills 目录下：
+当前支持两个平台：
+
+- Codex
+- Claude Code
+
+推荐先 clone 到任意本地目录，再用安装脚本写入对应平台的 skills 目录：
+
+```bash
+git clone https://github.com/NeoXue-ai/math-modeling-solver.git
+cd math-modeling-solver
+python3 scripts/install_skill.py --target both
+```
+
+安装脚本会复制到：
+
+```text
+~/.codex/skills/math-modeling-solver
+~/.claude/skills/math-modeling-solver
+```
+
+只安装 Codex：
 
 ```bash
 mkdir -p ~/.codex/skills
 git clone https://github.com/NeoXue-ai/math-modeling-solver.git ~/.codex/skills/math-modeling-solver
 ```
 
-在 Codex 中可以这样调用：
+只安装 Claude Code：
+
+```bash
+git clone https://github.com/NeoXue-ai/math-modeling-solver.git
+cd math-modeling-solver
+python3 scripts/install_skill.py --target claude
+```
+
+## 调用方式
+
+Codex 中可以这样调用：
 
 ```text
 Use $math-modeling-solver to solve this CUMCM problem with checkpoints, verified solver code, sensitivity analysis, and a paper draft.
 ```
+
+Claude Code 中可以这样调用：
+
+```text
+使用 math-modeling-solver skill 帮我解这道数学建模题。请先初始化工作区，然后按 checkpoint 推进。
+```
+
+更详细的 Claude Code 用法见 [`docs/claude-code.md`](docs/claude-code.md)。
 
 ## 快速开始
 
@@ -156,6 +194,8 @@ math-modeling-solver/
 │   └── openai.yaml
 ├── assets/
 │   └── cumcm_template.tex
+├── docs/
+│   └── claude-code.md
 ├── references/
 │   ├── cumcm_workflow.md
 │   ├── model_library.md
@@ -164,6 +204,7 @@ math-modeling-solver/
 │   └── verification_rules.md
 ├── scripts/
 │   ├── compile_paper.py
+│   ├── install_skill.py
 │   ├── pipeline_manager.py
 │   ├── quality_gate.py
 │   ├── setup_workspace.py
@@ -176,6 +217,7 @@ math-modeling-solver/
 | 脚本 | 作用 |
 | --- | --- |
 | `setup_workspace.py` | 初始化 `CUMCM_Workspace/`、状态文件和结果注册表。 |
+| `install_skill.py` | 安装到 Codex 和 Claude Code 的 skills 目录。 |
 | `pipeline_manager.py` | 管理阶段状态、review request、用户决策和返工记录。 |
 | `verify_report.py` | 解析结构化验证报告。 |
 | `quality_gate.py` | 执行模型验证门禁和论文质量门禁。 |
