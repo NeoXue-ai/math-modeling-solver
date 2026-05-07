@@ -8,7 +8,7 @@
   <a href="https://github.com/NeoXue-ai/math-modeling-solver">
     <img alt="Platform" src="https://img.shields.io/badge/platform-Codex%20%7C%20Claude%20Code-1f6feb">
   </a>
-  <img alt="Tests" src="https://img.shields.io/badge/tests-41%20passing-2da44e">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-47%20passing-2da44e">
   <img alt="Python" src="https://img.shields.io/badge/python-3.9%2B-3776ab">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-0969da">
 </p>
@@ -32,6 +32,7 @@
 | 能力 | 作用 |
 | --- | --- |
 | 状态机工作区 | 每个阶段都有持久化状态，中断后可恢复。 |
+| 题源门禁 | 没有真实题面、粘贴题面或明确模拟题声明时，阻断正式建模。 |
 | 人工 checkpoint | 模型路线、关键假设、结果入文都需要确认。 |
 | Verification report | 模型结果必须有结构化验证报告。 |
 | Result registry | 论文只能引用已登记、已验证、已批准的结果。 |
@@ -255,6 +256,7 @@ math-modeling-solver/
 | 脚本 | 作用 |
 | --- | --- |
 | `install_skill.py` | 安装到 Codex / Claude Code。 |
+| `problem_source_gate.py` | 校验题面来源，阻止无来源题目进入正式建模。 |
 | `setup_workspace.py` | 初始化标准建模工作区。 |
 | `pipeline_manager.py` | 管理阶段状态、review request 和用户决策。 |
 | `verify_report.py` | 解析结构化验证报告。 |
@@ -283,6 +285,7 @@ python3 /path/to/skill-creator/scripts/quick_validate.py .
 - 质量门禁
 - 论文编译 fallback
 - Codex / Claude Code 双平台安装
+- 题源门禁
 
 ## Roadmap
 
