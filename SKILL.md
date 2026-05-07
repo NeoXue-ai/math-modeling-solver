@@ -17,23 +17,13 @@ Run a CUMCM-first, verification-gated mathematical modeling workflow. This skill
 
 ## First Action On Every Invocation
 
-Resolve bundled scripts relative to this skill directory. Run `python scripts/pipeline_manager.py --project <project-root> status` if `CUMCM_Workspace/state/pipeline.json` exists. Also run `python scripts/problem_source_gate.py --project <project-root> status` to inspect problem source metadata.
-
-If the workspace does not exist, ask for the problem file or pasted statement, attachment path if any, whether this is an official problem or mock problem, and existing model preference if any. Then run `python scripts/setup_workspace.py --project <project-root>`.
-
-Before `problem_parse`, record the problem source in `CUMCM_Workspace/memory/problem_source.json` and run `python scripts/problem_source_gate.py --project <project-root> validate`. If validation blocks, stop and ask for source evidence. Do not infer or fabricate a problem statement.
-
-Never claim a year, contest, A/B/C problem code, official title, attachment list, or data description unless it appears in a user-provided source file or pasted statement. If the user asks for a not-yet-provided official CUMCM problem, ask for the original statement or treat it explicitly as a mock problem.
+Resolve bundled scripts relative to this skill directory. Run `python scripts/pipeline_manager.py --project <project-root> status` if `CUMCM_Workspace/state/pipeline.json` exists. If the workspace does not exist, ask for the problem file or pasted statement, attachment path if any, and existing model preference if any, then run `python scripts/setup_workspace.py --project <project-root>`.
 
 ## Stage Flow
 
 Follow this order: `problem_parse`, `model_route_review`, `assumption_review`, `data_audit`, `data_preprocess`, `model_build`, `model_verify`, `sensitivity_analysis`, `result_review`, `paper_draft`, `paper_quality_audit`, `final_compile`, `complete`.
 
 Each stage must leave recoverable artifacts under `CUMCM_Workspace/`. Do not skip stages based on chat memory.
-
-## Problem Source Gate
-
-`CUMCM_Workspace/memory/problem_source.json` is mandatory. The source type must be one of `official_file`, `pasted_statement`, or `mock_problem`; `unknown` blocks modeling. Official contest claims require source evidence. A missing, unreadable, or empty statement file blocks `problem_parse`.
 
 ## Human Checkpoints
 
