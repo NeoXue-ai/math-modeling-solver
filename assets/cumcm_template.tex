@@ -1,24 +1,301 @@
-\documentclass[UTF8]{ctexart}
-\usepackage{amsmath,amssymb,booktabs,graphicx,geometry,listings}
-\geometry{a4paper,margin=2.5cm}
-\title{数学建模论文}
-\author{}
-\date{}
+%! Mode:: "TeX:UTF-8"
+%! TEX program = xelatex
+\documentclass[UTF8,a4paper,12pt]{ctexart}
+
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,tabularx,array,multirow}
+\usepackage{graphicx,float,subcaption}
+\usepackage{geometry,fancyhdr,titlesec}
+\usepackage{appendix}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{caption}
+
+\renewcommand{\appendixname}{附录}
+\renewcommand{\appendixtocname}{附录}
+\renewcommand{\appendixpagename}{附录}
+
+\geometry{left=2.5cm,right=2.5cm,top=2.8cm,bottom=2.5cm}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.3em}
+\linespread{1.25}
+
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+
+\definecolor{modelblue}{RGB}{31,95,163}
+\definecolor{lightgray}{RGB}{245,247,250}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=modelblue,
+  citecolor=modelblue,
+  urlcolor=modelblue
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{数学建模论文}
+\rhead{\contestproblem}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\centering\heiti\zihao{3}}{\thesection}{1em}{}
+\titleformat{\subsection}{\heiti\zihao{4}}{\thesubsection}{0.8em}{}
+\titleformat{\subsubsection}{\heiti\zihao{-4}}{\thesubsubsection}{0.6em}{}
+\captionsetup{font=small,labelfont=bf}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{modelblue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{teal},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  frame=single,
+  breaklines=true,
+  backgroundcolor=\color{lightgray},
+  columns=fullflexible
+}
+
+% ===== Metadata filled by workflow =====
+\newcommand{\papertitle}{数学建模论文题目}
+\newcommand{\contestproblem}{A题}
+\newcommand{\registrationnumber}{}
+\newcommand{\schoolname}{}
+\newcommand{\teammembera}{}
+\newcommand{\teammemberb}{}
+\newcommand{\teammemberc}{}
+\newcommand{\supervisorname}{}
+\newcommand{\submitdate}{\today}
+
+\newcommand{\keywords}[1]{\par\vspace{0.8em}\noindent\textbf{关键词：} #1}
+
+\newcommand{\makecoverinfo}{
+  \begin{titlepage}
+    \centering
+    \vspace*{1.5cm}
+    {\zihao{2}\heiti \papertitle \par}
+    \vspace{1.5cm}
+    {\zihao{4} \contestproblem \par}
+    \vspace{2cm}
+    \begin{tabular}{rl}
+      报名号： & \registrationnumber \\
+      学校： & \schoolname \\
+      队员一： & \teammembera \\
+      队员二： & \teammemberb \\
+      队员三： & \teammemberc \\
+      指导教师： & \supervisorname \\
+      日期： & \submitdate \\
+    \end{tabular}
+    \vfill
+  \end{titlepage}
+}
+
+\newcommand{\problemabstract}[3]{
+  \noindent\textbf{针对#1}，#2 #3\par\vspace{0.4em}
+}
+
 \begin{document}
-\maketitle
+
+\makecoverinfo
+
+\begin{center}
+  {\zihao{3}\heiti \papertitle}
+\end{center}
+
 \begin{abstract}
-摘要内容由工作流生成。
+本文围绕题目要求，建立可复现的数学模型，并通过程序求解、结构化验证报告和敏感性分析保证结果可靠。摘要应采用逐问题摘要写法，每一段对应一个子问题，明确说明模型、求解方法、关键结果和结论。
+
+\problemabstract{问题一}{概述所用模型与主要求解流程。}{写入经 result registry 批准的关键结果。}
+\problemabstract{问题二}{概述改进模型、约束处理或优化算法。}{写入经 verification report 通过的核心结论。}
+\problemabstract{问题三}{概述扩展情形、参数变化或多因素耦合处理。}{写入敏感性分析与稳健性结论。}
+\problemabstract{问题四}{概述最终方案、推广或调整策略。}{写入最终建议和适用边界。}
+
+\keywords{数学建模；模型验证；敏感性分析；结果注册表；论文质量审计}
 \end{abstract}
-\textbf{关键词：} 数学建模；模型验证；敏感性分析
+
+% \tableofcontents
+% \newpage
+
 \section{问题重述}
+\subsection{问题背景}
+概述题目背景、现实意义和建模对象。不得加入未在题目或附件中出现的事实。
+
+\subsection{问题要求}
+按子问题列出任务目标、输入数据、约束条件和交付结果。
+
 \section{问题分析}
+\subsection{问题一分析}
+说明子问题一的建模思路、变量关系、数据依赖和预期输出。
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.82\textwidth}{\centering 图示占位：问题一思路图或数据结构图}}
+  \caption{问题一分析示意图}
+  \label{fig:q1-analysis}
+\end{figure}
+
+\subsection{问题二分析}
+说明子问题二与问题一结果的依赖关系、约束变化和算法选择理由。
+
+\subsection{问题三分析}
+说明扩展场景、耦合因素、参数变化和需要新增的验证项。
+
+\subsection{问题四分析}
+说明最终方案生成逻辑、动态调整机制或综合评价方法。
+
 \section{模型假设}
+为简化问题并保证模型可解，作出如下假设。每条假设必须在正文中被使用，并在敏感性分析或模型评价中说明影响。
+
+\begin{enumerate}[label=假设\arabic*：,leftmargin=4em]
+  \item 这里填写经用户确认的假设及理由。
+  \item 这里填写经用户确认的假设及理由。
+  \item 这里填写经用户确认的假设及理由。
+\end{enumerate}
+
 \section{符号说明}
+\begin{table}[H]
+\centering
+\caption{主要符号说明}
+\begin{tabularx}{\textwidth}{CLC}
+\toprule
+符号 & 说明 & 单位 \\
+\midrule
+$x_i$ & 决策变量或状态变量示例 & -- \\
+$p_i$ & 参数示例 & -- \\
+$R_k$ & 结果注册表中的第 $k$ 个批准结果 & -- \\
+\bottomrule
+\end{tabularx}
+\label{tab:symbols}
+\end{table}
+
 \section{数据预处理}
+说明数据来源、字段含义、缺失值、异常值、单位转换和清洗方法。所有清洗步骤应对应可复现脚本。
+
+\begin{table}[H]
+\centering
+\caption{数据字段审计表}
+\begin{tabularx}{\textwidth}{LCCC}
+\toprule
+字段 & 含义 & 处理方式 & 备注 \\
+\midrule
+字段名 & 字段说明 & 清洗或转换方法 & 风险说明 \\
+\bottomrule
+\end{tabularx}
+\label{tab:data-audit}
+\end{table}
+
 \section{模型的建立与求解}
+\subsection{问题一}
+\subsubsection{模型建立}
+写出变量定义、目标函数、约束条件和核心公式。
+
+\[
+  \min f(x), \quad \text{s.t. } g_i(x) \le 0,\ i=1,2,\dots,m
+\]
+
+\subsubsection{模型求解}
+说明求解算法、参数设置、代码文件和运行环境。结果必须来自可执行代码。
+
+\subsubsection{求解结果}
+只写入已通过验证并在 `result_registry.json` 中批准的结果。
+
+\begin{table}[H]
+\centering
+\caption{问题一关键结果}
+\begin{tabularx}{\textwidth}{LCC}
+\toprule
+结果编号 & 指标 & 数值 \\
+\midrule
+R1 & 指标名称 & 经批准的数值 \\
+\bottomrule
+\end{tabularx}
+\label{tab:q1-results}
+\end{table}
+
+\subsection{问题二}
+\subsubsection{模型建立}
+说明问题二模型与问题一的继承关系和新增约束。
+
+\subsubsection{模型求解}
+说明算法流程、迭代策略或仿真方案。
+
+\subsubsection{求解结果}
+展示经批准的表格、图形和结论。
+
+\subsection{问题三}
+\subsubsection{模型建立}
+说明扩展模型、耦合机制或多情形处理。
+
+\subsubsection{模型求解}
+说明求解流程和计算结果来源。
+
+\subsubsection{求解结果}
+展示经批准的结果和稳健性说明。
+
+\subsection{问题四}
+\subsubsection{模型建立}
+说明综合模型、最终策略或动态调整规则。
+
+\subsubsection{模型求解}
+说明求解过程、输出文件和关键参数。
+
+\subsubsection{求解结果}
+给出最终方案和适用边界。
+
 \section{模型的检验与敏感性分析}
-\section{模型评价与推广}
-\section{参考文献}
-\appendix
-\section{代码附录}
+\subsection{模型检验}
+汇总 verification report 的通过项、基线比较和约束检查结果。
+
+\subsection{敏感性分析}
+说明关键参数扰动范围、输出变化和模型稳健性。
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.82\textwidth}{\centering 图示占位：敏感性分析曲线或对比图}}
+  \caption{敏感性分析示意图}
+  \label{fig:sensitivity}
+\end{figure}
+
+\section{模型的评价与改进}
+\subsection{模型的优点}
+总结模型在解释性、计算效率、鲁棒性或可推广性上的优势。
+
+\subsection{模型的不足}
+说明假设限制、数据质量风险和可能影响。
+
+\subsection{模型的改进}
+提出可以落地的改进方向，不写无法验证的空泛展望。
+
+\begin{thebibliography}{9}
+\bibitem{ref1}
+作者. 文献题名[J]. 期刊名, 年份, 卷(期): 页码.
+\end{thebibliography}
+
+\begin{appendices}
+
+\section{文件列表}
+\begin{table}[H]
+\centering
+\caption{支撑材料文件列表}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+文件名 & 功能描述 \\
+\midrule
+src/models/example.py & 模型求解代码示例 \\
+reports/verification/example_report.md & 结构化验证报告示例 \\
+output/final_paper.md & Markdown 论文输出 \\
+\bottomrule
+\end{tabularx}
+\label{tab:file-list}
+\end{table}
+
+\section{代码}
+完整代码见 `CUMCM_Workspace/src/`。正文只保留核心片段或说明。
+
+\end{appendices}
 \end{document}
