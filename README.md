@@ -1,53 +1,46 @@
-# 数学建模 Solver
+<h1 align="center">数学建模 Solver</h1>
 
-面向 Codex 的 CUMCM/国赛优先数学建模工作流 skill。
+<p align="center">
+  面向 CUMCM / 国赛的验证门禁式数学建模工作流 Skill
+</p>
 
-它不是“一键生成论文”的模板工具，而是一个强调可审计、可恢复、可验证的建模流水线：从题目解析、模型路线选择、假设确认、数据审计、代码求解、结果验证、敏感性分析，到论文草稿和质量门禁，都通过本地状态文件和脚本串起来。
+<p align="center">
+  <a href="https://github.com/NeoXue-ai/math-modeling-solver">
+    <img alt="Platform" src="https://img.shields.io/badge/platform-Codex%20%7C%20Claude%20Code-1f6feb">
+  </a>
+  <img alt="Tests" src="https://img.shields.io/badge/tests-39%20passing-2da44e">
+  <img alt="Python" src="https://img.shields.io/badge/python-3.9%2B-3776ab">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-0969da">
+</p>
 
-## 目前效果
+---
 
-当前版本已经可以稳定完成以下工作：
+`math-modeling-solver` 是一个给 Codex 和 Claude Code 使用的数学建模工作流 skill。它不把建模当成“一次性聊天生成论文”，而是把题目解析、模型路线、假设确认、代码求解、验证报告、敏感性分析和论文草稿纳入一条可恢复、可审计、可验证的流水线。
 
-- 初始化标准 `CUMCM_Workspace/` 工作区。
-- 用状态机管理建模阶段，支持中断后恢复。
-- 在模型路线、关键假设、结果入文三个节点要求人工确认。
-- 解析结构化 verification report，阻止失败或未批准结果进入论文。
-- 审计论文草稿，检查未批准 registry 结果、缺失图表、占位文本、未登记结果引用和显著数值。
-- 在有 `xelatex` 时编译 PDF；没有 LaTeX 环境时保留 Markdown 论文输出。
-- 提供国赛中文论文结构、模型库、验证规则、评分对齐等参考资料。
+核心目标很明确：**让论文里的每个关键数值、图表和结论都能追溯到代码、验证报告和用户批准。**
 
-已经通过本地测试：
+## 为什么需要它
 
-```bash
-python3 -m unittest discover -s tests -v
-python3 /path/to/skill-creator/scripts/quick_validate.py /path/to/math-modeling-solver
-```
+普通建模 prompt 容易出现三个问题：
 
-当前测试覆盖 39 个用例，覆盖 workspace 初始化、pipeline 状态转换、verification report 解析、质量门禁、论文编译 fallback 和双平台安装。
+- 结果来自对话推断，缺少可复现代码。
+- 论文写得很完整，但数值和图表没有验证链路。
+- 中途换模型、改假设、修结果后，旧结论混进最终稿。
 
-## 适用场景
+这个 skill 用状态机、人工 checkpoint 和自动 gate 解决这些问题。
 
-适合：
+| 能力 | 作用 |
+| --- | --- |
+| 状态机工作区 | 每个阶段都有持久化状态，中断后可恢复。 |
+| 人工 checkpoint | 模型路线、关键假设、结果入文都需要确认。 |
+| Verification report | 模型结果必须有结构化验证报告。 |
+| Result registry | 论文只能引用已登记、已验证、已批准的结果。 |
+| Paper audit | 自动拦截未批准结果、缺失图表、占位文本和未登记数值。 |
+| 双平台安装 | 同一套 skill 支持 Codex 和 Claude Code。 |
 
-- 中文数学建模竞赛题，尤其是国赛风格题目。
-- 希望“模型 + 代码 + 验证 + 论文草稿”一起推进的工作流。
-- 不希望论文中混入聊天中临时编造的数值、图表或结论。
-- 需要多人协作时保留阶段状态、用户决策和结果注册表。
+## 快速开始
 
-不适合：
-
-- 只想要单个公式推导或单张图。
-- 只做普通数据分析，不需要竞赛论文结构。
-- 希望绕过验证门禁直接生成最终论文。
-
-## 安装
-
-当前支持两个平台：
-
-- Codex
-- Claude Code
-
-推荐先 clone 到任意本地目录，再用安装脚本写入对应平台的 skills 目录：
+安装到 Codex 和 Claude Code：
 
 ```bash
 git clone https://github.com/NeoXue-ai/math-modeling-solver.git
@@ -55,72 +48,28 @@ cd math-modeling-solver
 python3 scripts/install_skill.py --target both
 ```
 
-安装脚本会复制到：
+安装后会写入：
 
 ```text
 ~/.codex/skills/math-modeling-solver
 ~/.claude/skills/math-modeling-solver
 ```
 
-只安装 Codex：
-
-```bash
-mkdir -p ~/.codex/skills
-git clone https://github.com/NeoXue-ai/math-modeling-solver.git ~/.codex/skills/math-modeling-solver
-```
-
-只安装 Claude Code：
-
-```bash
-git clone https://github.com/NeoXue-ai/math-modeling-solver.git
-cd math-modeling-solver
-python3 scripts/install_skill.py --target claude
-```
-
-## 调用方式
-
-Codex 中可以这样调用：
+在 Codex 中调用：
 
 ```text
 Use $math-modeling-solver to solve this CUMCM problem with checkpoints, verified solver code, sensitivity analysis, and a paper draft.
 ```
 
-Claude Code 中可以这样调用：
+在 Claude Code 中调用：
 
 ```text
 使用 math-modeling-solver skill 帮我解这道数学建模题。请先初始化工作区，然后按 checkpoint 推进。
 ```
 
-更详细的 Claude Code 用法见 [`docs/claude-code.md`](docs/claude-code.md)。
+Claude Code 详细说明见 [`docs/claude-code.md`](docs/claude-code.md)。
 
-## 快速开始
-
-在你的项目目录初始化工作区：
-
-```bash
-python3 ~/.codex/skills/math-modeling-solver/scripts/setup_workspace.py --project .
-```
-
-查看当前流水线状态：
-
-```bash
-python3 ~/.codex/skills/math-modeling-solver/scripts/pipeline_manager.py --project . status
-```
-
-典型输出：
-
-```text
-Current stage: problem_parse
-problem_parse: not_started
-model_route_review: not_started
-...
-```
-
-之后把题目文件、附件和数据放入 `CUMCM_Workspace/problem/` 或 `CUMCM_Workspace/data/raw/`，再让 Codex 使用 `$math-modeling-solver` 继续推进。
-
-## 工作流
-
-一图看懂整体流程：
+## 工作流总览
 
 ```mermaid
 flowchart LR
@@ -156,7 +105,7 @@ flowchart LR
     class O output;
 ```
 
-完整阶段如下：
+完整阶段：
 
 ```text
 problem_parse
@@ -174,58 +123,88 @@ final_compile
 complete
 ```
 
-三个关键人工 checkpoint：
+## 适用场景
 
-- `model_route_review`：选择建模路线。
-- `assumption_review`：确认模型假设。
-- `result_review`：确认哪些已验证结果允许写入论文。
+适合：
 
-两个自动 gate：
+- 国赛 / CUMCM 风格中文数学建模题。
+- 需要“模型、代码、验证、论文草稿”一起推进。
+- 希望团队协作时保留阶段状态、用户决策和结果来源。
+- 不希望论文中混入未经验证的数值、图表或结论。
 
-- `model_verify`：验证报告必须全部通过。
-- `paper_quality_audit`：论文只能使用 result registry 中已验证且已批准的结果。
+不适合：
 
-## 目录结构
+- 单个公式推导、单张图或普通数据分析。
+- 不需要竞赛论文结构的轻量任务。
+- 希望绕过验证门禁直接生成最终论文。
+
+## 平台支持
+
+| 平台 | 安装方式 | 调用方式 |
+| --- | --- | --- |
+| Codex | `python3 scripts/install_skill.py --target codex` | `Use $math-modeling-solver ...` |
+| Claude Code | `python3 scripts/install_skill.py --target claude` | `使用 math-modeling-solver skill ...` |
+| 两者同时安装 | `python3 scripts/install_skill.py --target both` | 按对应平台调用 |
+
+## 工作区结构
+
+初始化后，项目目录会出现：
 
 ```text
-math-modeling-solver/
-├── SKILL.md
-├── agents/
-│   └── openai.yaml
-├── assets/
-│   └── cumcm_template.tex
-├── docs/
-│   └── claude-code.md
-├── references/
-│   ├── cumcm_workflow.md
-│   ├── model_library.md
-│   ├── paper_structure.md
-│   ├── scoring_rubric.md
-│   └── verification_rules.md
-├── scripts/
-│   ├── compile_paper.py
-│   ├── install_skill.py
-│   ├── pipeline_manager.py
-│   ├── quality_gate.py
-│   ├── setup_workspace.py
-│   └── verify_report.py
-└── tests/
+CUMCM_Workspace/
+├── problem/                 # 题目与附件
+├── state/                   # pipeline 状态、用户决策、review request
+├── memory/                  # 题目分析、建模路线、假设、结果注册表
+├── data/                    # raw / cleaned 数据
+├── src/                     # 模型与验证代码
+├── reports/                 # verification report 和 QA report
+├── figures/                 # 论文图表
+├── paper/                   # LaTeX 草稿与章节
+└── output/                  # final_paper.md / final_paper.pdf
 ```
 
-## 核心脚本
+这套结构让建模过程可以被检查、恢复和复现，而不是依赖聊天上下文。
 
-| 脚本 | 作用 |
-| --- | --- |
-| `setup_workspace.py` | 初始化 `CUMCM_Workspace/`、状态文件和结果注册表。 |
-| `install_skill.py` | 安装到 Codex 和 Claude Code 的 skills 目录。 |
-| `pipeline_manager.py` | 管理阶段状态、review request、用户决策和返工记录。 |
-| `verify_report.py` | 解析结构化验证报告。 |
-| `quality_gate.py` | 执行模型验证门禁和论文质量门禁。 |
-| `compile_paper.py` | 有 `xelatex` 时编译 PDF；否则保留 Markdown fallback。 |
+## 核心命令
 
-## Verification Report 格式
+初始化工作区：
 
-模型结果进入论文前，需要生成类似这样的验证报告：
+```bash
+python3 ~/.codex/skills/math-modeling-solver/scripts/setup_workspace.py --project .
+```
+
+查看当前阶段：
+
+```bash
+python3 ~/.codex/skills/math-modeling-solver/scripts/pipeline_manager.py --project . status
+```
+
+运行模型验证门禁：
+
+```bash
+python3 ~/.codex/skills/math-modeling-solver/scripts/quality_gate.py \
+  --project . \
+  model-verify \
+  --report CUMCM_Workspace/reports/verification/problem1_report.md
+```
+
+运行论文门禁：
+
+```bash
+python3 ~/.codex/skills/math-modeling-solver/scripts/quality_gate.py --project . paper-audit
+```
+
+编译论文：
+
+```bash
+python3 ~/.codex/skills/math-modeling-solver/scripts/compile_paper.py --project .
+```
+
+如果系统没有 `xelatex`，会保留 Markdown fallback：`CUMCM_Workspace/output/final_paper.md`。
+
+## Verification Report
+
+模型结果进入论文前，需要生成结构化验证报告：
 
 ```text
 VERIFICATION REPORT
@@ -238,25 +217,51 @@ checks:
 approved_for_paper: true
 ```
 
-只有当顶层 `status` 为 `PASS`、每个 check 都为 `PASS`、且 `approved_for_paper: true` 时，质量门禁才会放行。
+只有同时满足以下条件，结果才允许进入论文：
+
+- 顶层 `status` 是 `PASS`
+- 每个 check 都是 `PASS`
+- `approved_for_paper` 是 `true`
+- 结果已写入 `CUMCM_Workspace/memory/result_registry.json`
 
 ## 论文边界
-
-论文草稿只能使用 `CUMCM_Workspace/memory/result_registry.json` 中满足以下条件的结果：
-
-- `verification_status` 等于 `PASS`
-- `approved_for_paper` 等于 `true`
-- `verification_report` 指向真实存在且解析通过的报告
 
 `paper-audit` 会阻止：
 
 - 未批准或验证失败的结果。
+- 指向缺失或失败 verification report 的 registry 记录。
 - 缺失图表。
 - 占位文本。
 - 未登记的 `R1`、`R2` 这类结果引用。
 - 未登记的显著数值。
 
-## 开发与测试
+换句话说：**论文不是从聊天记忆里生成最终答案，而是从验证通过的结果注册表里取证据。**
+
+## 仓库结构
+
+```text
+math-modeling-solver/
+├── SKILL.md
+├── agents/openai.yaml
+├── assets/cumcm_template.tex
+├── docs/claude-code.md
+├── references/
+├── scripts/
+└── tests/
+```
+
+核心脚本：
+
+| 脚本 | 作用 |
+| --- | --- |
+| `install_skill.py` | 安装到 Codex / Claude Code。 |
+| `setup_workspace.py` | 初始化标准建模工作区。 |
+| `pipeline_manager.py` | 管理阶段状态、review request 和用户决策。 |
+| `verify_report.py` | 解析结构化验证报告。 |
+| `quality_gate.py` | 执行模型验证门禁和论文门禁。 |
+| `compile_paper.py` | 编译 LaTeX，或保留 Markdown fallback。 |
+
+## 开发与验证
 
 运行全部测试：
 
@@ -270,20 +275,22 @@ python3 -m unittest discover -s tests -v
 python3 /path/to/skill-creator/scripts/quick_validate.py .
 ```
 
-## 当前边界
+当前测试覆盖：
 
-- v1 重点是国赛中文建模流程。
-- 不内置绘图 helper；具体绘图代码由建模阶段按题目生成。
-- 不自动保证论文质量达到竞赛获奖水平；它保证的是流程可追踪、结果可验证、论文边界更严格。
-- 对论文中未登记数值的检测采用保守文本规则，强门禁场景下建议在正文中引用 registry 的结果编号。
+- workspace 初始化
+- pipeline 状态转换
+- verification report 解析
+- 质量门禁
+- 论文编译 fallback
+- Codex / Claude Code 双平台安装
 
 ## Roadmap
 
-- 增加 result registry 写入辅助脚本。
-- 增加常用数据审计模板。
-- 增加更多题型 smoke cases。
-- 增加论文附录代码清单生成。
-- 增加面向团队协作的阶段报告导出。
+- result registry 写入辅助脚本。
+- 常用数据审计模板。
+- 更多题型 smoke cases。
+- 论文附录代码清单生成。
+- 面向团队协作的阶段报告导出。
 
 ## License
 
