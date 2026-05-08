@@ -6,12 +6,12 @@ Use this file to decide what each stage must consume, produce, and review. Keep 
 
 | Stage | Entry artifacts | Required work | Exit artifacts | Stop? |
 | --- | --- | --- | --- | --- |
-| `problem_parse` | Problem statement, attachments | Extract tasks, objectives, constraints, deliverables, data files, units, and implicit assumptions. | `memory/problem_analysis.md` | No |
-| `model_route_review` | Problem analysis, data audit preview | Propose 2-3 routes with baseline model, improved model, validation plan, evidence, and risks. | `memory/modeling_route.md`, `state/review_request.md` | Yes |
+| `problem_parse` | Problem statement, attachments | Extract tasks, objectives, constraints, deliverables, data files, units, implicit assumptions, and stated-vs-observed data horizon. Flag missing periods and whether forecasting is requested. | `memory/problem_analysis.md`, `data/data_horizon_audit.md` | No |
+| `model_route_review` | Problem analysis, data horizon audit, data audit preview | Propose 2-3 routes with a hand-checkable conservation baseline, improved model, validation plan, evidence, and risks. If any route uses generated/extrapolated data, show the no-extrapolation baseline beside it. | `memory/modeling_route.md`, `state/review_request.md` | Yes |
 | `assumption_review` | Approved route | Draft assumptions with justification, affected variables, and expected effect on results. | `memory/assumptions.md`, `state/review_request.md` | Yes |
-| `data_audit` | Raw data, attachments | Inspect schema, missingness, outliers, units, encoding, sampling period, and leakage risks. | `data/data_audit.md` | No |
-| `data_preprocess` | Audit notes, raw data | Write reproducible cleaning code; preserve raw files; save cleaned data and preprocessing notes. | `data/cleaned/`, preprocessing script or notebook | No |
-| `model_build` | Approved assumptions, cleaned data | Implement solver code for each subproblem; save outputs deterministically. | `src/models/`, model outputs, figures | No |
+| `data_audit` | Raw data, attachments | Inspect schema, missingness, outliers, units, encoding, sampling period, stated-vs-observed horizon, and leakage/extrapolation risks. | `data/data_audit.md` | No |
+| `data_preprocess` | Audit notes, raw data | Write reproducible cleaning code; preserve raw files; save cleaned data and preprocessing notes. Generated or extrapolated records must be labeled separately from observed records. | `data/cleaned/`, preprocessing script or notebook | No |
+| `model_build` | Approved assumptions, cleaned data | Implement the hand-checkable baseline first, then improved solver code for each subproblem; save outputs deterministically. | `src/models/`, baseline outputs, model outputs, figures | No |
 | `model_verify` | Solver outputs | Run independent checks and write one structured report per model or subproblem. | `reports/verification/*.md` | Gate |
 | `sensitivity_analysis` | Verified model code | Vary key parameters and data perturbations; record robustness and failure ranges. | Sensitivity report, figures | No |
 | `result_review` | Verification and sensitivity reports | Summarize registry results, figures, limitations, and paper inclusion candidates. | Updated `memory/result_registry.json`, `state/review_request.md` | Yes |
