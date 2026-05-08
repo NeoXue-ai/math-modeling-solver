@@ -23,6 +23,7 @@ Use `status: FAIL` or `approved_for_paper: false` when any required evidence is 
 - Record input data versions, random seeds, parameters, and runtime-relevant settings.
 - Confirm units and dimensions for every table column used in formulas.
 - Compare against a simple baseline or hand-checkable case.
+- Verify data horizon preservation: observed records, generated/extrapolated records, and final modeled horizon must be explicitly counted. If generated records affect a decision, the report must include the decision under observed-only data.
 - Check that saved figures and tables match the registry values.
 
 ## Optimization and Planning
@@ -72,3 +73,36 @@ Use `status: FAIL` or `approved_for_paper: false` when any required evidence is 
 - Calibration: compare simulated outputs to observed or known reference values.
 - Scenario monotonicity: check that parameter changes move outputs in plausible directions.
 - Uncertainty: report confidence intervals or percentile ranges for stochastic results.
+
+## Model-Family Specific Verification Examples
+
+Use the relevant checklist only when that model family appears in the solution.
+
+### Queueing / Service-System Models
+
+- Data horizon audit: report observed intervals, interval length, total observed arrivals, and whether any intervals were extrapolated or generated.
+- Conservation baseline: compute backlog recursion and queue-area average wait on observed data before Erlang C, Monte Carlo, or ML models.
+- Formula applicability: identify intervals where `arrival_rate >= service_capacity`; steady-state formulas for those intervals are invalid unless handled by transient/backlog logic.
+- Decision comparison: report the minimum feasible server/window count under the observed-only baseline and under any extrapolated/scenario data.
+- Drain handling: if the observation window ends with a positive queue, include post-window clearing area in total waiting time.
+
+### Forecasting / Regression Models
+
+- State whether the task asks for forecasting or only uses observed data.
+- Use time-based splits when data are ordered by time.
+- Flag predictions outside the observed range as extrapolation.
+- Compare against a naive baseline such as mean, last value, or moving average.
+
+### Optimization / Planning Models
+
+- Recompute objective value directly from returned decision variables.
+- Check every hard constraint independently.
+- Compare against a greedy, relaxed, or enumerated baseline when feasible.
+- Report infeasible cases instead of silently relaxing constraints.
+
+### Evaluation / Ranking Models
+
+- Confirm every indicator direction: benefit, cost, or interval type.
+- Report normalization method.
+- Run weight sensitivity or alternate weighting comparison.
+- Flag rank reversals under small weight changes.
