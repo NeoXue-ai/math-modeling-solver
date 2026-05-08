@@ -15,6 +15,8 @@ description: >
 
 Run a CUMCM-first, verification-gated mathematical modeling workflow. This skill is a rigorous workflow controller, not a black-box paper generator.
 
+Core principle: correctness beats sophistication. The workflow must first preserve the problem's stated data horizon and pass a simple conservation/baseline calculation before using advanced models or drafting a paper.
+
 ## First Action On Every Invocation
 
 Resolve bundled scripts relative to this skill directory. Run `python scripts/pipeline_manager.py --project <project-root> status` if `CUMCM_Workspace/state/pipeline.json` exists. If the workspace does not exist, ask for the problem file or pasted statement, attachment path if any, and existing model preference if any, then run `python scripts/setup_workspace.py --project <project-root>`.
@@ -24,6 +26,14 @@ Resolve bundled scripts relative to this skill directory. Run `python scripts/pi
 Follow this order: `problem_parse`, `model_route_review`, `assumption_review`, `data_audit`, `data_preprocess`, `model_build`, `model_verify`, `sensitivity_analysis`, `result_review`, `paper_draft`, `paper_quality_audit`, `final_compile`, `complete`.
 
 Each stage must leave recoverable artifacts under `CUMCM_Workspace/`. Do not skip stages based on chat memory.
+
+## Non-Negotiable Modeling Gates
+
+Before `model_route_review`, write a data-horizon audit: list the stated time span, observed sample span, whether missing periods exist, and whether the problem asks for forecasting. Do not extend, mirror, interpolate, or synthesize missing demand unless the user explicitly approves it at `assumption_review`. If you propose generated data, present the no-extrapolation baseline next to it.
+
+Before advanced modeling, implement the simplest hand-checkable conservation baseline for the problem class. For queues with empirical time-varying arrivals, this is usually a discrete backlog/queue-area model: `Q_i=max(0,Q_{i-1}+arrivals_i-capacity_i)`, with average waiting time equal to queue-area divided by total arrivals. Any Erlang, stochastic, ML, heuristic, or metaheuristic model must be compared against this baseline.
+
+The `model_verify` report must include a baseline comparison that can falsify the chosen model. If a simpler baseline gives a different decision (for example, different minimum window count), stop and explain the discrepancy before `result_review`.
 
 ## Human Checkpoints
 
